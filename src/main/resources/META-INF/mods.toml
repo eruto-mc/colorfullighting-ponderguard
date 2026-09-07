@@ -1,0 +1,63 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="MIT"
+issueTrackerURL="https://github.com/erutobusiness"
+
+[[mixins]]
+config="clponderguard.mixins.json"
+
+[[mods]]
+modId="clponderguard"
+version="1.0.0"
+displayName="Colorful Lighting Ponder Guard"
+authors="erutobusiness"
+# Client-side only: no registry entries, no network channels, no server-side behaviour.
+# Without this the server list shows a red X because the server does not have the mod.
+displayTest="IGNORE_ALL_VERSION"
+description='''
+Stops Colorful Lighting from crashing the client when a Ponder scene is opened.
+
+Ponder draws its scenes in a PonderLevel, which is not a real client level. Colorful Lighting
+only creates its coloured light engine for levels that implement CLSupportingLevel (that is,
+ClientLevel), so a PonderLevel has none. Its renderer mixins call getEngine() without checking,
+and every scene throws NullPointerException while rendering the screen.
+
+Upstream already has the escape hatch for the block path (CreateCompat returns a flat white for
+PonderLevel), but it is only initialised when the mod id "create" is loaded. Ponder ships on its
+own inside other mods now, so packs with Ponder but no Create never reach it. The entity path has
+no escape hatch at all, so it crashes even with Create installed.
+
+This mod returns the same flat white value upstream uses, ahead of Colorful Lighting, for both
+paths. Ponder scenes are rendered without coloured light; everything outside them is untouched.
+
+Reported upstream: https://github.com/Camawama/colorful-lighting-sodium/issues/47
+Once that is fixed this mod is unnecessary; leaving it installed does no harm.
+'''
+
+[[dependencies.clponderguard]]
+    modId="forge"
+    mandatory=true
+    versionRange="[47,)"
+    ordering="NONE"
+    side="CLIENT"
+
+[[dependencies.clponderguard]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1,1.20.2)"
+    ordering="NONE"
+    side="CLIENT"
+
+[[dependencies.clponderguard]]
+    modId="colorful_lighting"
+    mandatory=true
+    versionRange="[2.0,)"
+    ordering="AFTER"
+    side="CLIENT"
+
+[[dependencies.clponderguard]]
+    modId="ponder"
+    mandatory=true
+    versionRange="[1.0,)"
+    ordering="AFTER"
+    side="CLIENT"

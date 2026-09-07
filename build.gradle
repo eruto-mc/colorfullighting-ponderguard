@@ -1,0 +1,55 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.spongepowered:mixingradle:0.7.38'
+    }
+}
+
+plugins {
+    id 'net.minecraftforge.gradle' version '[6.0.24,6.2)'
+}
+
+apply plugin: 'org.spongepowered.mixin'
+
+version = '1.0.0'
+group = 'net.erutobusiness'
+base { archivesName = 'colorfullighting_ponderguard' }
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+}
+
+mixin {
+    add sourceSets.main, 'clponderguard.refmap.json'
+    config 'clponderguard.mixins.json'
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.20.1-47.3.0'
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    // Ponder は独立した MOD として配布されておらず、casualswing / effortlessbuilding の
+    // jar の中（META-INF/jarjar/）に同梱されている。maven から取れないので手元に置く。
+    // ⚠ 実行時は同梱しない（利用者が既に持っているものへ当てる）。
+    compileOnly files('libs/ponder.jar')
+}
+
+jar {
+    manifest {
+        attributes([
+            'Specification-Title'   : 'colorfullighting_ponderguard',
+            'Specification-Version' : '1',
+            'Implementation-Title'  : 'Colorful Lighting Ponder Guard',
+            'Implementation-Version': project.version,
+            'MixinConfigs'          : 'clponderguard.mixins.json'
+        ])
+    }
+}

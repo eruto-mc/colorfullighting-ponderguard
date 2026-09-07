@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.erutobusiness.clponderguard.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "clponderguard.refmap.json",
+  "mixins": [],
+  "client": [
+    "EntityRendererMixin",
+    "LevelRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
