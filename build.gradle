@@ -48,6 +48,9 @@ jar {
             'Specification-Title'   : 'colorfullighting_ponderguard',
             'Specification-Version' : '1',
             'Implementation-Title'  : 'Colorful Lighting Ponder Guard',
+            // mods.toml が version="${file.jarVersion}" でここを読む。
+            // Writing the version in mods.toml as a literal instead means bumping
+            // project.version silently leaves the mod's declared version behind.
             'Implementation-Version': project.version,
             'MixinConfigs'          : 'clponderguard.mixins.json'
         ])

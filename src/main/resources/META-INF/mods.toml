@@ -8,7 +8,9 @@ config="clponderguard.mixins.json"
 
 [[mods]]
 modId="clponderguard"
-version="1.0.0"
+# Read from the jar manifest's Implementation-Version (set from project.version in
+# build.gradle), so bumping the build version cannot leave this line behind.
+version="${file.jarVersion}"
 displayName="Colorful Lighting Ponder Guard"
 authors="erutobusiness"
 # Client-side only: no registry entries, no network channels, no server-side behaviour.
@@ -48,13 +50,19 @@ Once that is fixed this mod is unnecessary; leaving it installed does no harm.
     ordering="NONE"
     side="CLIENT"
 
+# Not mandatory on purpose. Without Colorful Lighting there is nothing to guard against:
+# Ponder renders fine on vanilla lighting. Making this mandatory only turns a harmless
+# "nothing to do" into a refusal to start on any client that does not ship it.
+# The mixins check at runtime and stay out of the way when it is absent.
 [[dependencies.clponderguard]]
     modId="colorful_lighting"
-    mandatory=true
+    mandatory=false
     versionRange="[2.0,)"
     ordering="AFTER"
     side="CLIENT"
 
+# Ponder, on the other hand, is required: the mixins reference PonderLevel directly,
+# so the class has to exist.
 [[dependencies.clponderguard]]
     modId="ponder"
     mandatory=true

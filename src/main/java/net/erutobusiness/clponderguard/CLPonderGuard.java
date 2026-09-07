@@ -1,11 +1,41 @@
 package net.erutobusiness.clponderguard;
 
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod(CLPonderGuard.MODID)
 public class CLPonderGuard {
 
     public static final String MODID = "clponderguard";
+
+    private static Boolean colorfulLighting;
+
+    /**
+     * Colorful Lighting が実際に読み込まれているか（一度だけ調べて覚える）。
+     *
+     * <p><b>無いときは何もしてはいけない。</b> {@link #FLAT_WHITE} は
+     * Colorful Lighting の詰め方に合わせた値なので、この MOD が入っていない
+     * クライアントでそれを返すと、バニラの読み方では桁の意味が違って
+     * 明るさが化ける。入っていなければ思案画面はバニラの明かりで正しく描かれるので、
+     * 何もしないのが正しい。
+     *
+     * <p>依存は {@code mandatory=false} にしてある。配布の都合で
+     * Colorful Lighting が入らないクライアントが在り
+     * （版によって中身が変わる MOD なので AutoModpack が配らない）、
+     * 必須にすると<b>守る相手が居ないだけなのに起動を止めて</b>しまう。
+     */
+    public static boolean colorfulLightingLoaded() {
+        Boolean cached = colorfulLighting;
+        if (cached == null) {
+            ModList list = ModList.get();
+            if (list == null) {
+                return false;            // 読み込みが済む前は何もしない
+            }
+            cached = list.isLoaded("colorful_lighting");
+            colorfulLighting = cached;
+        }
+        return cached;
+    }
 
     /**
      * Colorful Lighting の packed light で「まっ白・空の明かり 0」を表す値。

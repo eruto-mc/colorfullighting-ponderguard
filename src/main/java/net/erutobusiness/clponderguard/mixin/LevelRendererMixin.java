@@ -49,7 +49,7 @@ public class LevelRendererMixin {
                                                         BlockState state,
                                                         BlockPos pos,
                                                         CallbackInfoReturnable<Integer> cir) {
-        if (level instanceof PonderLevel) {
+        if (level instanceof PonderLevel && CLPonderGuard.colorfulLightingLoaded()) {
             cir.setReturnValue(CLPonderGuard.FLAT_WHITE);
         }
     }

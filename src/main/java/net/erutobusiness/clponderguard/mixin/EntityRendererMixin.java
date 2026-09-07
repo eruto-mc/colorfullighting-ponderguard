@@ -31,7 +31,7 @@ public class EntityRendererMixin {
     private void clponderguard$flatLightInPonder(Entity entity,
                                                  float partialTick,
                                                  CallbackInfoReturnable<Integer> cir) {
-        if (entity.level() instanceof PonderLevel) {
+        if (entity.level() instanceof PonderLevel && CLPonderGuard.colorfulLightingLoaded()) {
             cir.setReturnValue(CLPonderGuard.FLAT_WHITE);
         }
     }
